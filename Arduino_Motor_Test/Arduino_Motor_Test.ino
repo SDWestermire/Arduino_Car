@@ -2,7 +2,7 @@
 #include <Servo.h> 
 
 /*MY NOTES;  The analog inputs can also be used as digital pins: analog input A0 as digital pin 14 through analog input 5 as digital pin 19.
- * Although I chose not to utilize this configuration it's worth noting :)
+
 
    Motor drive module                   Arduino UNO      Code Variable and pin Def
    IN1--------------------------------------A3-------------pinRF = 8
@@ -12,12 +12,12 @@
 
 */
 
-//MOTOR VARIABLES
+//MOTOR VARIABLES  
 int pinLB=6;     // Define a motor pin for Left Motor on Pin 7
 int pinLF=7;     // Define a motor pin for Left Motor on Pin 6
 
-int pinRB=8;    // Define a 16 Pin which is Analog Pin A2
-int pinRF=9;    // Define a 17 Pin which is Analog Pin A3
+int pinRB=8;    // Define a 16 Pin which is Analog Pin A2 - 
+int pinRF=9;    // Define a 17 Pin which is Analog Pin A3 - 
 
 int MotorLPWM=5;  //Define a PWM to motor Enable Pin B on Pin 5
 int MotorRPWM=10;  //Define a PWM to motor Enable Pin A on Pin 13
