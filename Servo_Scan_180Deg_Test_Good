@@ -1,0 +1,51 @@
+
+//Servo and stuff
+//Declarations
+
+#include <Servo.h>
+
+int usbEcho = A1;        //Declare and initalize usbDistance to Pin A1 
+int triggerOut = A0;   //Declare and initialize triggerOut on Pin A0 - send high/low pulse to HS R04 rangefinder
+int servoAdjust = 1;   //Declare and initalize servoAdjust as Pin 1 - send pos received from  calculated value pof HS R04
+
+float resultSensor;  //define the variable to hold the R04 sensor value
+float speedOfSound = 770.5;   //speed of sound in MPH
+int servoAngle;    //Hold value for output on pin 6
+int pos = 0;
+
+float pingTime = 0.0;  //create var for echo translation
+float targetDistance = 0.0;  //create var for echo translation
+
+
+Servo myServo;  //Create server object called myServo
+void setup(){
+  
+  pinMode(usbEcho, INPUT);      //Receives input from HS R04  
+  pinMode(triggerOut, OUTPUT);  //Submits output to HS R04 
+  // pinMode(servoAdjust, OUTPUT); //Submit to server the adjusted range value
+  myServo.attach(4);  //Define server object on serverAjust = pin 1
+
+  Serial.begin(9600);           //initailize the serial communications port.
+  Serial.println("Working on it");
+
+} 
+
+
+void loop(){
+myServo.write(90);
+
+  for (pos = 20; pos <= 170; pos += 5) { // goes from 0 degrees to 180 degrees
+    // in steps of 1 degree
+    myServo.write(pos);              // tell servo to go to position in variable 'pos'
+    Serial.println(pos);
+    delay(100);                       // waits 15ms for the servo to reach the position
+  }
+  for (pos = 170; pos >= 20; pos -= 5) { // goes from 180 degrees to 0 degrees
+    myServo.write(pos);              // tell servo to go to position in variable 'pos'
+    Serial.println(pos);
+    delay(100);                       // waits 15ms for the servo to reach the position
+  }
+
+
+
+}
