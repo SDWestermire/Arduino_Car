@@ -1,0 +1,81 @@
+
+//Servo and stuff
+//Declarations
+
+#include <Servo.h>
+
+int usbEcho = A1;        //Declare and initalize usbDistance to Pin A1 
+int triggerOut = A0;   //Declare and initialize triggerOut on Pin A0 - send high/low pulse to HS R04 rangefinder
+int servoAdjust = 4;   //Declare and initalize servoAdjust as Pin 1 - send pos received from  calculated value pof HS R04
+
+float resultSensor;  //define the variable to hold the R04 sensor value
+float speedOfSound = 770.5;   //speed of sound in MPH
+int servoAngle;    //Hold value for output on pin 6
+
+float pingTime = 0.0;  //create var for echo translation
+float targetRtDistance = 0.0;  //create var for echo translation
+float targetLfDistance = 0.0;  //create var for echo translation
+
+Servo myServo;  //Create server object called myServo
+void setup(){
+  
+  pinMode(usbEcho, INPUT);      //Receives input from HS R04  
+  pinMode(triggerOut, OUTPUT);  //Submits output to HS R04 
+  // pinMode(servoAdjust, OUTPUT); //Submit to server the adjusted range value
+  myServo.attach(4); 
+
+  Serial.begin(9600);           //initailize the serial communications port.
+
+
+}
+
+
+void loop(){
+
+    myServo.write(5);
+    delay(2000);
+
+    digitalWrite(triggerOut, LOW);   //Set R04 sensor to low
+    delayMicroseconds(2000);  
+    digitalWrite(triggerOut, HIGH);  //Send pulse 
+    delayMicroseconds(10);
+    digitalWrite(triggerOut, LOW);
+    delayMicroseconds(20);  //settle down pulse with this pause
+    
+     pingTime = pulseIn(usbEcho, HIGH);  //pingTime is presented in microceconds
+     pingTime=pingTime/1000000; //convert pingTime to seconds by dividing by 1000000 (microseconds in a second)
+     pingTime=pingTime/3600; //convert pingtime to hourse by dividing by 3600 (seconds in an hour)
+     targetRtDistance= speedOfSound * pingTime;  //This will be in miles, since speed of sound was miles per hour
+     targetRtDistance=targetRtDistance/2; //Remember ping travels to target and back from target, so you must divide by 2 for actual target distance.
+     targetRtDistance= targetRtDistance*63360;    //Convert miles to inches by multipling by 63360 (inches per mile)
+      
+      Serial.print("The Distance to Right Target is: ");
+      Serial.print(targetRtDistance);
+      Serial.println(" inches");
+      delay(500);
+      
+
+   myServo.write(180);
+   delay(2000);
+  
+    digitalWrite(triggerOut, LOW);   //Set R04 sensor to low
+    delayMicroseconds(2000);  
+    digitalWrite(triggerOut, HIGH);  //Send pulse 
+    delayMicroseconds(10);
+    digitalWrite(triggerOut, LOW);
+    delayMicroseconds(20);  //settle down pulse with this pause
+    
+     pingTime = pulseIn(usbEcho, HIGH);  //pingTime is presented in microceconds
+     pingTime=pingTime/1000000; //convert pingTime to seconds by dividing by 1000000 (microseconds in a second)
+     pingTime=pingTime/3600; //convert pingtime to hourse by dividing by 3600 (seconds in an hour)
+     targetLfDistance= speedOfSound * pingTime;  //This will be in miles, since speed of sound was miles per hour
+     targetLfDistance=targetLfDistance/2; //Remember ping travels to target and back from target, so you must divide by 2 for actual target distance.
+     targetLfDistance= targetLfDistance*63360;    //Convert miles to inches by multipling by 63360 (inches per mile)
+      
+      Serial.print("The Distance to Left Target is: ");
+      Serial.print(targetLfDistance);
+      Serial.println(" inches");
+      delay(500);
+
+
+}
