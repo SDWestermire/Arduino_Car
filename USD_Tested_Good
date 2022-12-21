@@ -1,6 +1,6 @@
 
 //Servo and stuff
-//Declarations
+//Declarations are added here
 
 #include <Servo.h>
 
@@ -33,7 +33,7 @@ void setup(){
 void loop(){
 
     myServo.write(5);
-    delay(2000);
+    delay(1000);
 
     digitalWrite(triggerOut, LOW);   //Set R04 sensor to low
     delayMicroseconds(2000);  
